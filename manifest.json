@@ -1,0 +1,10 @@
+{
+  "name": "Text Extractor",
+  "description": "Converts an image to text",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

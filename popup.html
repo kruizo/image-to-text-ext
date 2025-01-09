@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image to Text Extension</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .drop-field {
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        color: #aaa;
+        margin-bottom: 20px;
+      }
+      .drop-field.dragover {
+        border-color: #000;
+        color: #000;
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+      }
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .extract-btn {
+        background-color: #007bff;
+        color: #fff;
+      }
+      .copy-btn {
+        background-color: #28a745;
+        color: #fff;
+      }
+      .text-output {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        min-height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="drop-field" id="dropField">
+        <input
+          type="file"
+          accept="image/*"
+          id="fileInput"
+          style="display: none"
+        />
+        Drop image here
+      </div>
+      <div class="buttons">
+        <button class="extract-btn" id="extractBtn">Extract Text</button>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="text-output" id="textOutput">
+        Extracted text will appear here...
+      </div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/0.1.1/tesseract.min.js"
+      integrity="sha512-D+1Mtte2dgKBw66/cLDj0gF4p2dRkeanSdtAGjSecXF9Rpvy5qvGa1cQt3d7eT1rH4H/1seSuXIcb+hacH7osQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
