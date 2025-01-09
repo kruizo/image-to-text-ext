@@ -1,10 +1,24 @@
 {
-  "name": "Text Extractor",
-  "description": "Converts an image to text",
-  "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["activeTab", "storage"],
+  "name": "Tesseract OCR Extension",
+  "version": "1.0",
+  "permissions": ["clipboardWrite", "activeTab", "storage"],
   "action": {
     "default_popup": "popup.html"
-  }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self';"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "lib/tesseract/worker.min.js",
+        "lib/lang_data/eng.traineddata",
+        "lib/tesseract/tesseract-core.wasm.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "host_permissions": ["http://*/*", "https://*/*"]
 }
