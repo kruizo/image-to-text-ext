@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       console.log(
         "langPath:",
-        chrome.runtime.getURL("lib/tesseract/eng.traineddata")
+        chrome.runtime.getURL("lib/lang_data/eng.traineddata")
       );
       console.log(
         "corePath:",
@@ -92,15 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
           await worker.load();
           console.log("Worker loaded");
 
-          console.log("Initializing worker...");
           await worker.initialize("eng");
           console.log("Worker initialized");
-          console.log(
-            "langPath:",
-            chrome.runtime.getURL("lib/lang_data/eng.traineddata")
-          );
-
-          await worker.loadLanguage("eng");
 
           console.log("Starting OCR recognition...");
           const { data } = await worker.recognize(imageData);
@@ -132,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const worker = await Tesseract.createWorker({
         workerPath: chrome.runtime.getURL("lib/tesseract/worker.min.js"),
         corePath: chrome.runtime.getURL("lib/tesseract/tesseract-core.wasm.js"),
-        langPath: chrome.runtime.getURL("lib/lang_data/eng.traineddata"),
+        langPath: chrome.runtime.getURL("lib/"),
         workerBlobURL: false,
       });
       console.log("Worker created successfully", worker);
