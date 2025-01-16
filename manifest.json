@@ -7,13 +7,14 @@
     "default_popup": "popup.html"
   },
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self';"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
   },
+
   "web_accessible_resources": [
     {
       "resources": [
         "lib/tesseract/worker.min.js",
-        "lib/lang_data/eng.traineddata",
+        "lib/lang_data/*.traineddata.gz",
         "lib/tesseract/tesseract-core.wasm.js"
       ],
       "matches": ["<all_urls>"]
