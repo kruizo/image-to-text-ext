@@ -74,15 +74,14 @@ copyBtn.addEventListener("click", (e) => {
     alert("No text to copy!");
   }
 });
-
-function init() {
-  const text = chrome.storage.local.get("extractedText");
-  if (text) textOutput.textContent = text;
-
-  const image = chrome.storage.local.get("uploadedImage");
-  if (image) {
+async function init() {
+  const { extractedText } = await chrome.storage.local.get("extractedText");
+  if (extractedText) textOutput.textContent = extractedText;
+  const { uploadedImage } = await chrome.storage.local.get("uploadedImage");
+  if (uploadedImage) {
     previewImg.style.display = "block";
-    previewImg.src = image;
+    previewImg.src = uploadedImage;
+    dropText.style.display = "none";
   }
 }
 
@@ -103,10 +102,15 @@ async function startOCR(file) {
 
   textOutput.textContent = `${result}`;
 
-  chrome.storage.local.set({
-    uploadedImage: file,
-    extractedText: result,
-  });
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const imageData = reader.result;
+    await chrome.storage.local.set({
+      uploadedImage: imageData,
+      extractedText: result,
+    });
+  };
+  reader.readAsDataURL(file);
 }
 
 async function extractText(file) {
