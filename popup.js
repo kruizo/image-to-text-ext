@@ -1,11 +1,13 @@
 const dropField = document.getElementById("dropField");
-const extractBtn = document.getElementById("extractBtn");
 const copyBtn = document.getElementById("copyBtn");
+const outputWrapper = document.getElementById("outputWrapper");
 const textOutput = document.getElementById("textOutput");
 const fileInput = document.createElement("input");
 const previewImg = document.getElementById("previewImg");
 const dropText = document.getElementById("dropText");
 const preview = document.getElementById("preview");
+const progressBar = document.getElementById("progress-bar");
+const extractBtn = document.getElementById("extractBtn");
 
 fileInput.type = "file";
 fileInput.accept = "image/*";
@@ -52,26 +54,45 @@ fileInput.addEventListener("change", async (event) => {
   await startOCR(file);
 });
 
-extractBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-  if (fileInput.files.length > 0) {
-    await startOCR(fileInput.files[0]);
-  } else {
-    alert("Please upload or drop an image first!");
-  }
-});
-
 copyBtn.addEventListener("click", (e) => {
   e.preventDefault();
   const text = textOutput.textContent;
+  const copyText = document.getElementById("copyText");
   if (text.trim()) {
     navigator.clipboard.writeText(text).then(() => {
-      alert("Text copied to clipboard");
+      copyText.textContent = "COPIED!";
     });
   } else {
     alert("No text to copy!");
   }
 });
+
+function updatePreviewImage(src) {
+  previewImg.src = src;
+  toggleElementVisibility(previewImg, true);
+  toggleElementVisibility(dropText, false);
+}
+
+function updateProgressBar(percentage, show = true) {
+  if (show) {
+    progressBar.style.display = "block";
+    progressBar.style.width = `${percentage}%`;
+  } else {
+    progressBar.style.display = "none";
+    progressBar.style.width = "0";
+  }
+}
+
+function toggleElementVisibility(element, show = true) {
+  element.style.display = show ? "block" : "none";
+}
+
+function toggleButtonState(button, disabled = true) {
+  button.innerHTML = disabled ? "Extracting" : "Extract";
+
+  button.classList.toggle("processing");
+  button.disabled = disabled;
+}
 
 async function startOCR(file) {
   if (!file) {
@@ -81,14 +102,26 @@ async function startOCR(file) {
     return new Error("Invalid file type. Please upload an image file.");
   }
 
-  textOutput.textContent = "Processing...";
-  document.getElementById("dropText").style.display = "none";
-  previewImg.style.display = "block";
-  previewImg.src = URL.createObjectURL(file);
+  toggleElementVisibility(outputWrapper, false);
+  updateProgressBar(0, true);
+  updatePreviewImage(URL.createObjectURL(file));
+  toggleButtonState(extractBtn);
+  textOutput.innerHTML = ""; // Clear previous text
 
-  const result = await extractText(file);
+  try {
+    const result = await extractText(file);
 
-  textOutput.innerHTML = `<pre>${result}</pre>`;
+    toggleElementVisibility(outputWrapper, true);
+    textOutput.innerHTML = `<pre>${result}</pre>`;
+    updateProgressBar(100, false);
+    toggleButtonState(extractBtn, false);
+  } catch (error) {
+    console.error("Error during OCR:", error);
+    textOutput.innerHTML = `<pre>Failed to process the image. Please try again.</pre>`;
+    toggleElementVisibility(outputWrapper, true);
+    updateProgressBar(0, false);
+    toggleButtonState(extractBtn, false);
+  }
 }
 
 async function extractText(file) {
@@ -97,15 +130,17 @@ async function extractText(file) {
     const worker = createWorker();
 
     await worker.load();
-
+    updateProgressBar(25);
     await worker.loadLanguage("eng");
+    updateProgressBar(50);
     await worker.initialize("eng");
-
+    updateProgressBar(75);
     const {
       data: { text },
     } = await worker.recognize(imageData);
 
     await worker.terminate();
+    updateProgressBar(100);
 
     return text;
   } catch (error) {

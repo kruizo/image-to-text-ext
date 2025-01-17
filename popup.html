@@ -19,15 +19,16 @@
       }
       html {
         width: 400px;
-        height: 505px;
+        max-height: 505px;
+        height: fit-content;
       }
       .container {
         display: flex;
         flex-direction: column;
         width: 100%;
         max-width: 400px;
-        height: 450px;
-        max-height: 500px;
+        height: fit-content;
+        max-height: 450px;
         padding: 20px;
         background-color: #fff;
         overflow-y: scroll;
@@ -55,6 +56,11 @@
       .buttons {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+      }
+      .buttons span,strong {
+        font-size: 14px;
+        color: #aaa;
       }
       button {
         padding: 10px 20px;
@@ -64,23 +70,29 @@
       }
       .extract-btn {
         background-color: #007bff;
+        content: 'Extract';
         color: #fff;
       }
       .copy-btn {
         background-color: #28a745;
         color: #fff;
       }
-      .text-output {
+      .output-wrapper {
         margin-top: 20px;
+        position: relative;
         padding: 10px;
+        display: none;
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: #f9f9f9;
         min-height: 100px;
         height: 100%;
-        overflow: auto; /* Enable scrolling if content overflows */
-        white-space: pre-wrap; /* Ensure text wraps correctly */
-        word-wrap: break-word; /* For long unbreakable words */
+
+      }
+      .text-output {
+        overflow: auto; 
+        font-size: 14px;
+        word-wrap: break-word; 
       }
 
       .preview{
@@ -106,7 +118,68 @@
         font-size: inherit;
         line-height: inherit;
       }
+      .instructions {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      font-weight: bold;
+      }
+      #progress-bar {
+        position: relative;
+        margin-top: 10px;
+        display: none;
+        height: 5px;
+        background-color: #007bff;
+        width: 0;
+        overflow: hidden;
+        transition: width 2s ease;
+      }
 
+      #progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 10%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.3); /* Glassy effect */
+        animation: moving-reflection 2s linear infinite;
+      }
+
+      @keyframes moving-reflection {
+        0% {
+          left: 0%;
+        }
+        50% {
+          left: 50%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+    .processing {
+        background-color: #efefef;
+        color: #c9c9c9;
+        content: 'Extracting...';
+    }
+
+    .output-wrapper:hover .copy-btn{
+      display: block;
+    }
+    .copy-btn{
+      position: absolute;
+      display: none;
+      padding: 10px 10px;
+      right: 0;
+      top: 0;
+      background-color: #f4f4f4;
+      color: #707070;
+    }
+    .copy-btn svg {
+      fill: #707070;;
+      width: 16px; 
+      height: 16px; 
+    }
     </style>
   </head>
   <body>
@@ -118,15 +191,28 @@
           id="fileInput"
           style="display: none"
         />
-        <span id="dropText">Drop image here</span>
+        <span id="dropText" style="font-size: 16px;">Click to choose an image </span>
         <img id="previewImg"></img>
       </div>
+
       <div class="buttons">
-        <button class="extract-btn" id="extractBtn">Extract Text</button>
-        <button class="copy-btn" id="copyBtn">Copy</button>
+        <span><strong>Ctrl + V</strong> to paste an image</span>
+        <button class="extract-btn" id="extractBtn">Extract</button>
+        <!-- <button class="copy-btn" id="copyBtn">Copy</button> -->
       </div>
-      <div class="text-output" id="textOutput">
-        Extracted text will appear here...
+      <div id="progress-bar" ></div>
+      <div class="output-wrapper" id="outputWrapper">
+        <div>
+          <button type="button" class="copy-btn" id="copyBtn">
+          <div style="display: flex; gap: 7px;">
+            <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm9-1.5v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z" fill-rule="nonzero"/>
+            </svg>
+            <span id="copyText">COPY</span>
+          </div>
+        </button>
+      </div>
+        <div class="text-output" id="textOutput"></div>
       </div>
     </div>
     <script src="lib/tesseract/tesseract.min.js"></script>
