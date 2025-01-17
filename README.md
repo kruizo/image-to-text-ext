@@ -2,9 +2,7 @@
 
 A simple Chrome extension that uses Tesseract.js to extract text from images. Drop an image or upload it to get the text content instantly!
 
-![image](https://github.com/kruizo/image-to-text-ext/blob/master/samples/1.png)
-![image](https://github.com/kruizo/image-to-text-ext/blob/master/samples/3.png)
-![image](https://github.com/kruizo/image-to-text-ext/blob/master/samples/2.png)
+![image](https://github.com/kruizo/image-to-text-ext/blob/master/samples/1.png) ![image](https://github.com/kruizo/image-to-text-ext/blob/master/samples/3.png) ![image](https://github.com/kruizo/image-to-text-ext/blob/master/samples/2.png)
 
 ## 🚀 Features
 
