@@ -14,7 +14,7 @@ A simple Chrome extension that uses Tesseract.js to extract text from images. Dr
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/image-to-text-extension.git
+   git clone https://github.com/kruizo/image-to-text-extension.git
    cd image-to-text-extension
    ```
 
@@ -40,7 +40,7 @@ This project is licensed under the MIT License.
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/yourusername/image-to-text-extension/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/kruizo/image-to-text-extension/issues).
 
 ## 📧 Contact
 
