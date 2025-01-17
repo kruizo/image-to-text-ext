@@ -100,7 +100,7 @@ async function startOCR(file) {
 
   const result = await extractText(file);
 
-  textOutput.textContent = `${result}`;
+  textOutput.innerHTML = `<pre>${result}</pre>`;
 
   const reader = new FileReader();
   reader.onload = async () => {
@@ -119,6 +119,7 @@ async function extractText(file) {
     const worker = createWorker();
 
     await worker.load();
+
     await worker.loadLanguage("eng");
     await worker.initialize("eng");
 
@@ -127,6 +128,7 @@ async function extractText(file) {
     } = await worker.recognize(imageData);
 
     await worker.terminate();
+
     return text;
   } catch (error) {
     console.error("Error during OCR:", error);

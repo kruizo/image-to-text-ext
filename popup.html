@@ -78,7 +78,11 @@
         background-color: #f9f9f9;
         min-height: 100px;
         height: 100%;
+        overflow: auto; /* Enable scrolling if content overflows */
+        white-space: pre-wrap; /* Ensure text wraps correctly */
+        word-wrap: break-word; /* For long unbreakable words */
       }
+
       .preview{
         display: flex;
         justify-content: center;
@@ -92,6 +96,15 @@
         height: 100%;
         display: none;
         object-fit: contain;
+      }
+      pre {
+        margin: 0;
+        padding: 0;
+        white-space: pre-wrap; /* Preserve text formatting */
+        word-wrap: break-word;
+        font-family: inherit; /* Match parent font */
+        font-size: inherit;
+        line-height: inherit;
       }
 
     </style>
@@ -119,5 +132,6 @@
     <script src="lib/tesseract/tesseract.min.js"></script>
     <!-- Add this line -->
     <script src="popup.js"></script>
+
   </body>
 </html>
